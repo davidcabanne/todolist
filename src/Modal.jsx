@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import * as col from "./styles/colorPalette";
 
 import { Label } from "./components/Typefaces";
@@ -49,27 +49,97 @@ const Form = styled.form`
 const Pannel = styled.div`
   display: flex;
   gap: 16px;
+
+  ${(props) =>
+    props.column &&
+    css`
+      flex-direction: column;
+      gap: 8px;
+    `}
 `;
 
 const Input = styled.input`
   padding: 16px;
-  border: none;
+  border: 2px solid transparent;
   border-radius: 4px;
   color: ${col.secondary};
   font-size: 16px;
   font-weight: 400;
   line-height: 1.4;
   background: ${col.light};
+  transition: border 50ms ease-in-out;
+
+  &.active {
+    border: 2px solid #fb415a;
+    background: #f4e6e8;
+  }
 `;
 
-export default function Modal({ toggleModal, addToList, handleCloseModal }) {
+const bounce = keyframes`
+  0% {
+    transform: translateX(0px);
+    timing-function: ease-in;
+  }
+  37% {
+    transform: translateX(5px);
+    timing-function: ease-out;
+  }
+  55% {
+    transform: translateX(-5px);
+    timing-function: ease-in;
+  }
+  73% {
+    transform: translateX(4px);
+    timing-function: ease-out;
+  }
+  82% {
+    transform: translateX(-4px);
+    timing-function: ease-in;
+  }
+  91% {
+    transform: translateX(2px);
+    timing-function: ease-out;
+  }
+  96% {
+    transform: translateX(-2px);
+    timing-function: ease-in;
+  }
+  100% {
+    transform: translateX(0px);
+    timing-function: ease-in;
+  }
+`;
+
+const ErrorSpan = styled.span`
+  color: #fb415a;
+  opacity: 0;
+  transition: 150ms ease-in-out;
+  transition-property: opacity;
+
+  &.active {
+    opacity: 1;
+    animation-name: ${bounce};
+    animation-duration: 0.5s;
+    animation-delay: 0.25s;
+  }
+`;
+
+export default function Modal({
+  toggleModal,
+  addToList,
+  handleCloseModal,
+  handleToggleError,
+  toggleError,
+}) {
   const inputRef = useRef(null);
   const [value, setValue] = useState("");
 
   const handleSubmit = (event, value) => {
     if (!value) {
+      handleToggleError(true);
       return;
     }
+    handleToggleError(false);
     addToList(event, value);
     inputRef.current.value = "";
   };
@@ -82,14 +152,26 @@ export default function Modal({ toggleModal, addToList, handleCloseModal }) {
         action="#"
       >
         <Label>Submit a new task</Label>
-        <Input
-          type="text"
-          id="taskForm"
-          name="taskForm"
-          placeholder="Write a new task"
-          onChange={(event) => setValue(event.target.value)}
-          ref={inputRef}
-        />
+        <Pannel column={+true}>
+          <Input
+            type="text"
+            id="taskForm"
+            name="taskForm"
+            placeholder="Write a new task"
+            onChange={(event) => setValue(event.target.value)}
+            ref={inputRef}
+            className={
+              value === "" && toggleError && toggleModal ? "active" : ""
+            }
+          />
+          <ErrorSpan
+            className={
+              value === "" && toggleError && toggleModal ? "active" : ""
+            }
+          >
+            You can't submit an empty value
+          </ErrorSpan>
+        </Pannel>
         <Pannel>
           <ButtonPrimary type="submit">Submit Task</ButtonPrimary>
           <ButtonPrimary onClick={handleCloseModal} danger={+true}>

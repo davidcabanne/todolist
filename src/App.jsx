@@ -31,6 +31,7 @@ function App() {
   );
   const [resetClasses, setResetClasses] = useState(false);
   const [countRemoveTasks, setCountRemoveTasks] = useState("Remove a task");
+  const [toggleError, setToggleError] = useState(false);
 
   const handleSelection = (value) => {
     if (value) {
@@ -63,10 +64,12 @@ function App() {
   const handleToggleModal = () => {
     setCheckedState(new Array(tempList.length).fill(false));
     setToggleModal(true);
+    setToggleError(false);
   };
 
   const handleCloseModal = () => {
     setToggleModal(false);
+    setToggleError(false);
   };
 
   // Handle cascading functions & state props to <List /> component
@@ -85,6 +88,10 @@ function App() {
 
   const handleTempList = (value) => {
     setTempList(value);
+  };
+
+  const handleToggleError = (value) => {
+    setToggleError(value);
   };
 
   return (
@@ -116,6 +123,8 @@ function App() {
         toggleModal={toggleModal}
         addToList={addToList}
         handleCloseModal={handleCloseModal}
+        handleToggleError={handleToggleError}
+        toggleError={toggleError}
       />
     </Layout>
   );
