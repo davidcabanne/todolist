@@ -5,7 +5,7 @@ import Layout from "./components/Layout";
 import { H1, H2 } from "./components/Typefaces";
 import List from "./components/List";
 import CallToActionPannel from "./components/CallToActionPannel";
-import Modal from "./Modal";
+import Modal from "./components/Modal";
 
 const data = [
   { text: `React tutorial` },

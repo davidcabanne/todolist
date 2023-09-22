@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import styled, { css, keyframes } from "styled-components";
-import * as col from "./styles/colorPalette";
+import * as col from "../styles/colorPalette";
 
-import { Label } from "./components/Typefaces";
-import ButtonPrimary from "./components/ButtonPrimary";
+import { Label } from "./Typefaces";
+import ButtonPrimary from "./ButtonPrimary";
 
 const Container = styled.div`
   position: absolute;
