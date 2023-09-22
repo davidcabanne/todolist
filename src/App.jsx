@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AutoHeight from "./lib/AutoHeight";
 
 import Layout from "./components/Layout";
 import { H1, H2 } from "./components/Typefaces";
@@ -35,6 +34,7 @@ function App() {
 
   const handleSelection = (value) => {
     if (value) {
+      setCountRemoveTasks("Remove tasks");
       setCheckedState(new Array(list.length).fill(true));
       setTempList([]);
       setResetClasses(false);
@@ -47,6 +47,14 @@ function App() {
 
   const addToList = (event, value) => {
     event.preventDefault();
+
+    if (list.length === 0) {
+      setList([{ id: list.length, text: `${value}` }]);
+      setTempList([{ id: list.length, text: `${value}` }]);
+      setCheckedState(new Array(list.length + 1).fill(false));
+      setResetClasses(true);
+    }
+
     setList([...list, { id: list.length, text: `${value}` }]);
     setTempList([...list, { id: list.length, text: `${value}` }]);
     setCheckedState(new Array(list.length + 1).fill(false));
@@ -101,18 +109,16 @@ function App() {
         Gagnez en concentration, en organisation et en sérénité avec Todolist.
         La 1ère application de gestion de tâches et de to do list.
       </H2>
-      <AutoHeight duration={300}>
-        <List
-          list={list}
-          tempList={tempList}
-          checkedState={checkedState}
-          resetClasses={resetClasses}
-          handleCountRemoveTasks={handleCountRemoveTasks}
-          handleCheckedState={handleCheckedState}
-          handleResetClasses={handleResetClasses}
-          handleTempList={handleTempList}
-        />
-      </AutoHeight>
+      <List
+        list={list}
+        tempList={tempList}
+        checkedState={checkedState}
+        resetClasses={resetClasses}
+        handleCountRemoveTasks={handleCountRemoveTasks}
+        handleCheckedState={handleCheckedState}
+        handleResetClasses={handleResetClasses}
+        handleTempList={handleTempList}
+      />
       <CallToActionPannel
         countRemoveTasks={countRemoveTasks}
         handleToggleModal={handleToggleModal}

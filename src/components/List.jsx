@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import * as col from "../styles/colorPalette";
 
@@ -161,7 +161,7 @@ export const List = ({
           marginTop:
             checkedState[index] && resetClasses ? `${-itemHeight}px` : "0px",
         }}
-        key={item.id}
+        key={item.text}
         id={item.id}
       >
         <Label>{item.text}</Label>
